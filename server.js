@@ -1,18 +1,16 @@
-// node --version # Should be >= 18
-// npm install @google/generative-ai express
-
 const express = require('express');
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
-const dotenv = require('dotenv').config()
+const dotenv = require('dotenv').config(); // Load environment variables
 
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
+
 const MODEL_NAME = "gemini-pro";
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.API_KEY; // Access the API key from the .env file
 
 async function runChat(userInput) {
-  const genAI = new GoogleGenerativeAI(API_KEY);
+  const genAI = new GoogleGenerativeAI(API_KEY); // Use the API key
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
   const generationConfig = {
@@ -61,9 +59,11 @@ async function runChat(userInput) {
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
+
 app.get('/loader.gif', (req, res) => {
   res.sendFile(__dirname + '/loader.gif');
 });
+
 app.post('/chat', async (req, res) => {
   try {
     const userInput = req.body?.userInput;
